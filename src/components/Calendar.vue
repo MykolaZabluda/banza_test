@@ -1,5 +1,7 @@
 <template>
   <div class="calendar">
+    <button @click="showModal = true">Create</button>
+    <AddEventModal v-if="showModal" :isVisible="showModal" @close="showModal = false" />
     <div class="calendar-header">
       <button class="calendar-header-button calendar-header-button-prev" @click="previousMonth"></button>
       <h2>{{ currentMonth }}</h2>
@@ -14,17 +16,25 @@
       </div>
     </div>
   </div>
+  {{ arrData }}
 </template>
 
 <script>
-// import Vue from "vue";
+import axios from "axios";
+import AddEventModal from "@/components/AddEventModal.vue";
 
 export default {
   name: 'CalendarView',
+  components: {
+    AddEventModal,
+  },
   data() {
     return {
       currentDate: new Date(),
+      showModal: false,
+      arrData: [],
       daysForCalendar: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+      accessToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQb3J0YWwvdXNlcm5hbWUiOiJaYWJsdWRhTXlrb2xhIiwiUG9ydGFsL3VzZXJpZCI6IjY4ZDFhMzM2LTI1NzUtNDYyNy05NDdmLWMxYjhmMGFlZjNhOSIsImp0aSI6IjcxODJiNjRjLWVlMDUtNDJiNi04Njg4LTlmODAwNzc2ZTNkMCIsIlBvcnRhbC90b2tlbnZlcnNpb24iOiIxIiwiUG9ydGFsL2NvbnRhY3RpZCI6ImJlNTcwNGFmLTU0MjgtNGM5YS1hMGI2LWQ1NGQ2MjFiMDU3MiIsIlBvcnRhbC9tb2RpZmllZG9uIjoiNjM4NTMxOTQ5Nzk0NjgzMjIwIiwiZXhwIjoxNzE4NDYyMTc5LCJpc3MiOiJMZWFybmluZyIsImF1ZCI6IkxlYXJuaW5nIGNsaWVudCJ9.Q6CX6SoP1xuzNe5qiuNeBO7cszBuH6ITbdbEniABABo"
     };
   },
   computed: {
@@ -71,6 +81,23 @@ export default {
       newDate.setMonth(newDate.getMonth() + 1);
       this.currentDate = newDate;
     },
+    async getAll() {
+      try {
+        const response = await axios.get('https://learning.banzait.com/back/api/Event/All', {
+          headers: {
+            Authorization: `Bearer ${this.accessToken}`
+          }
+        });
+
+        this.arrData = response.data;
+      } catch (error) {
+        console.error('Error fetching all matches:', error);
+        throw error;
+      }
+    },
+  },
+  created() {
+    this.getAll();
   },
 };
 </script>
