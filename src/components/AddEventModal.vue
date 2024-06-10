@@ -3,25 +3,27 @@
     <div class="modal-content">
       <span class="close" @click="closeModal">&times;</span>
       <h2>Create Event</h2>
-      <div>
+      <div class="form-group">
         <label for="eventType">Event Type</label>
         <select id="eventType" v-model="eventType">
           <option v-for="option in options" :key="option.id" :value="option.id">{{ option.text }}</option>
         </select>
       </div>
-      <div>
+      <div class="form-group">
         <label for="name">Name</label>
         <input id="name" v-model="name" type="text" />
       </div>
-      <div>
+      <div class="form-group">
         <label for="startDate">Start Date</label>
         <input id="startDate" v-model="startDate" type="date" />
       </div>
-      <div>
+      <div class="form-group">
         <label for="endDate">End Date</label>
         <input id="endDate" v-model="endDate" type="date" />
       </div>
-      <button @click="createData()">Submit</button>
+      <div class="button-group">
+        <button @click="createData()">Submit</button>
+      </div>
     </div>
   </div>
 </template>
@@ -80,7 +82,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
 .modal {
   display: flex;
   justify-content: center;
@@ -93,27 +95,87 @@ export default {
   height: 100%;
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.5);
-}
 
-.modal-content {
-  background-color: #fefefe;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 300px;
-  border-radius: 8px;
-}
+  .modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border: none;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    text-align: left;
 
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
+    h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
 
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
+    .form-group {
+      margin-bottom: 15px;
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #666;
+      }
+
+      input, select {
+        width: 100%;
+        padding: 8px;
+        margin: 0;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      input:focus, select:focus {
+        border-color: #5b9bd5;
+        outline: none;
+      }
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: right;
+
+      button {
+        padding: 10px 20px;
+        font-size: 14px;
+        color: #fff;
+        background-color: #5b9bd5;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s;
+
+        &:hover {
+          background-color: #4a8bc2;
+        }
+      }
+    }
+
+    .close {
+      color: #aaa;
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover,
+      &:focus {
+        color: #000;
+        text-decoration: none;
+      }
+    }
+  }
 }
 </style>
